@@ -4,4 +4,4 @@ jsonschema==4.19.1
 mock==5.1.0
 setuptools~=68.2.0
 pandas
-faker
+faker~=36.1.0
