@@ -74,9 +74,21 @@ def generate_fake_data(yaml_file, output_file, num_rows=100):
         state = get_supported_state()
         gender = fake.random_element(elements=("1", "2"))  # 1 for
         name_details = generate_name_details(fake, gender)
+        dob = fake.date_of_birth(minimum_age=18, maximum_age=98)
         for column in columns:
-            if 'date' in column.lower():
-                row.append(fake.date_of_birth(minimum_age=18, maximum_age=90).strftime('%Y%m%d'))
+            if 'date' in column.lower() and 'birth' in column.lower() or 'dob' in column.lower():
+                row.append(dob)
+            elif 'date' in column.lower() and 'death' in column.lower():
+                age = (pd.Timestamp.now() - pd.Timestamp(dob)).days // 365
+                if age > 95:
+                    death_date = dob + pd.DateOffset(years=random.randint(70, 95))
+                    row.append(death_date.strftime('%Y%m%d'))
+                else:
+                    if random.random() < 0.2:
+                        death_date = dob + pd.DateOffset(years=random.randint(70, 95))
+                        row.append(death_date.strftime('%Y%m%d'))
+                    else:
+                        row.append('')
             elif 'email' in column.lower():
                 row.append(fake.email())
             elif 'phone' in column.lower():
@@ -106,11 +118,11 @@ def generate_fake_data(yaml_file, output_file, num_rows=100):
             elif 'gender' in column.lower():
                 row.append(gender)  # 1 for Male, 2 for Female
             elif 'ethnicity' in column.lower():
-                row.append(fake.random_element(elements=("Hispanic", "Non-Hispanic")))
+                row.append(fake.random_element(elements=("Hispanic", "Caucasian", "African American", "Asian", "Not Provided", "", "American Indian", "Pacific Islander")))
             elif 'race' in column.lower():
                 row.append(fake.random_element(elements=("White (Non-Hispanic)", "Black or African American", "Asian or Pacific Islander", "Other")))
             elif 'language' in column.lower():
-                row.append(fake.random_element(elements=("English", "Spanish", "Vietnamese", "Russian", "Chinese Cantonese", "Khmer", "Korean", "Arabic", "Persian", "Hmong")))
+                row.append(fake.random_element(elements=("English", "Spanish", "Vietnamese", "Russian", "Chinese Cantonese", "Khmer", "Korean", "Arabic", "Persian", "Hmong", "French", "German")))
             elif 'relationship' in column.lower():
                 row.append(fake.random_element(elements=("Self", "Spouse", "Child")))
             elif 'marital' in column.lower():
