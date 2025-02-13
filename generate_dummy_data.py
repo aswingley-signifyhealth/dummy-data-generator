@@ -56,7 +56,7 @@ def generate_name_details(fake: Faker, gender: str) -> dict:
         "full_name": full_name
     }
 
-def generate_fake_data(yaml_file, output_file, num_rows=100):
+def generate_fake_data(yaml_file, output_file, num_rows=800):
     # Initialize Faker
     fake = Faker()
 
