@@ -1,10 +1,15 @@
+import random
+import re
+import string
+from datetime import datetime, timezone
+
 import pandas as pd
+import sys
 import yaml
 from faker import Faker
-import sys
-import random
-import string
+
 from utils import generate_medicaid_id, get_supported_states
+
 
 def generate_medicare_id():
     # Define the allowed characters
@@ -56,7 +61,35 @@ def generate_name_details(fake: Faker, gender: str) -> dict:
         "full_name": full_name
     }
 
-def generate_fake_data(yaml_file, output_file, num_rows=800):
+
+def format_filename_with_timestamp(filename: str) -> str:
+    """
+    Validates and formats a filename to ensure it ends with .csv, .txt, or no extension,
+    then adds a UTC timestamp before the extension.
+    
+    Args:
+        filename: The original filename to process
+        
+    Returns:
+        Formatted filename with timestamp
+    """
+    # Get UTC timestamp
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
+
+    # Match filename pattern with optional .csv or .txt extension
+    pattern = r'^(.+?)(\.(?:csv|txt))?$'
+    match = re.match(pattern, filename, re.IGNORECASE)
+
+    if match:
+        base = match.group(1)
+        ext = match.group(2) or ''  # Use empty string if no extension
+        return f"{base}_{timestamp}{ext}"
+    else:
+        # This case should never occur given the regex pattern
+        return f"{filename}_{timestamp}.csv"
+        
+
+def generate_fake_data(yaml_file, output_file, num_rows=500):
     # Initialize Faker
     fake = Faker()
 
@@ -77,7 +110,7 @@ def generate_fake_data(yaml_file, output_file, num_rows=800):
         dob = fake.date_of_birth(minimum_age=18, maximum_age=98)
         for column in columns:
             if 'date' in column.lower() and 'birth' in column.lower() or 'dob' in column.lower():
-                row.append(dob)
+                row.append(dob.strftime("%Y%m%d"))
             elif 'date' in column.lower() and 'death' in column.lower():
                 age = (pd.Timestamp.now() - pd.Timestamp(dob)).days // 365
                 if age > 95:
@@ -141,7 +174,7 @@ def generate_fake_data(yaml_file, output_file, num_rows=800):
     df = pd.DataFrame(data, columns=columns)
 
     # Save to CSV
-    df.to_csv(output_file, index=False)
+    df.to_csv(format_filename_with_timestamp(output_file), index=False)
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:

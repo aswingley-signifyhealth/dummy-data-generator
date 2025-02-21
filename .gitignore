@@ -173,3 +173,5 @@ cython_debug/
 # Rider
 .idea/
 .DS_Store
+/examples
+/generated_csvs
