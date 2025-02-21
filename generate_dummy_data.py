@@ -144,9 +144,11 @@ def generate_fake_data(yaml_file, output_file, num_rows=800):
     df.to_csv(output_file, index=False)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python generate_dummy_data.py <yaml_file> <output_file>")
+    if len(sys.argv) < 3:
+        print("Usage: python generate_dummy_data.py <yaml_file> <output_file> [<num_records>]")
     else:
         yaml_file = sys.argv[1]
         output_file = sys.argv[2]
-        generate_fake_data(yaml_file, output_file)
+        num_records = int(sys.argv[3]) if len(sys.argv) > 3 else 800
+    
+        generate_fake_data(yaml_file, output_file, num_records)
