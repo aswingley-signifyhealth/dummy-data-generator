@@ -169,3 +169,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Rider
+.idea/
+.DS_Store
+/examples
+/generated_csvs

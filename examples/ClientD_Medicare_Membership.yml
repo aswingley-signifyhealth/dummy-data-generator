@@ -1,0 +1,129 @@
+filetype: membership
+filesubtype:
+fileformat: delimited
+header: True
+delimiter: ","
+target: membership
+database: hive_metastore
+schema: load_clientd_medicare
+columns:
+  MEMBER_ID:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_SUBSCRIBER_ID:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_MEDICARE_ID:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_MEDICAID_ID:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_ID_ALTERNATE_1:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_ID_ALTERNATE_2:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_GLOBAL_UNIQUE_ID:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_NAME_PREFIX:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_NAME_FIRST:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_NAME_MIDDLE:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_NAME_LAST:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_NAME_SUFFIX:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_NAME_PREFERRED:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_DATE_OF_BIRTH:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_DATE_OF_DEATH:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_GENDER:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_ETHNICITY:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_RACE:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_SPOKEN_LANGUAGE:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_RELATIONSHIP_TO_SUBSCRIBER:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_MARITAL_STATUS:
+    validate:
+      type: string
+      nullable: true
+  COUNTRY_CODE:
+    validate:
+      type: string
+      nullable: true
+  PHONE_NUMBER:
+    validate:
+      type: string
+      nullable: true
+  EMAIL_ADDRESS:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_ADDRESS_LINE_1:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_ADDRESS_LINE_2:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_ADDRESS_LINE_3:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_CITY:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_STATE:
+    validate:
+      type: string
+      nullable: true
+  MEMBER_ZIP_CODE:
+    validate:
+      type: string
+      nullable: true
