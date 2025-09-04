@@ -5,3 +5,4 @@ mock==5.1.0
 setuptools~=68.2.0
 pandas
 faker~=36.1.0
+azure-storage-blob>=12.0.0
