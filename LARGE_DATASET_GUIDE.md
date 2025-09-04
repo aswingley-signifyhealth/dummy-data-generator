@@ -92,15 +92,36 @@ python generate_large_dataset.py ... blob ... "$CONNECTION_STRING" ...
 - **Cons**: Requires Azure account, network dependency
 
 ```bash
-# Recommended approach for 4M records
+# Recommended approach for 4M records (with chunked upload)
 python generate_large_dataset.py \
     examples/ClientD_Medicare_Membership.yml \
     blob \
+    400000 \
+    "$AZURE_STORAGE_CONNECTION_STRING" \
+    membership-data \
+    dev_membership_400k.csv
+
+# Alternative: Simple upload approach (if chunked upload has issues)
+python generate_with_simple_blob_upload.py \
+    examples/ClientD_Medicare_Membership.yml \
     4000000 \
     "$AZURE_STORAGE_CONNECTION_STRING" \
     membership-data \
-    membership_4million.csv
+    dev_membership_400k.csv
 ```
+
+### 1a. Handling Upload Timeouts
+For very large datasets, Azure blob uploads can timeout. We provide two approaches:
+
+**Chunked Upload (Default)**:
+- Uploads data in 50K record blocks
+- Includes retry logic and extended timeouts
+- More complex but handles large files better
+
+**Simple Upload (Fallback)**:
+- Generates local file first, then uploads
+- Uses Azure's built-in chunking
+- Simpler approach, requires temporary local storage
 
 ### 2. Optimize Chunk Size for Your System
 ```python
@@ -138,6 +159,22 @@ Solution: Reduce chunk_size to 1000-2500
 ```
 
 ### Blob Upload Issues
+
+#### Timeout Errors
+```
+Error: TimeoutError('The write operation timed out')
+Error: ServiceResponseError: ('Connection aborted.', TimeoutError)
+
+Root Cause: Large file uploads (>1GB) can exceed Azure's default timeout limits
+
+Solutions:
+1. Use the improved chunked upload (automatically applied in generate_large_dataset.py)
+2. Use the simple upload approach: python generate_with_simple_blob_upload.py
+3. Reduce dataset size for testing: try 100K records first
+4. Check network stability and speed
+```
+
+#### Connection Issues
 ```
 Error: Azure connection timeout
 Solution: Check connection string and network connectivity
